@@ -28,6 +28,9 @@
 	  •	Ejecuten el código para asegurarse de que cada fábrica produce el tipo correcto de vehículo y motor.
 
  */
+
+import { COLORS } from '../helpers/colors.ts';
+
 // 1. Interfaces de Vehicle y Engine
 interface Vehicle {
   assemble(): void;
@@ -39,24 +42,36 @@ interface Engine {
 
 // 2. Clases Concretas de Productos
 
-class ElectricCar {
+class ElectricCar implements Vehicle {
   // Implementación del método assemble
   // 'Ensamblando un auto eléctrico'
+  assemble(): void {
+    console.log('%cEnsamblando un auto eléctrico', COLORS.green);
+  }
 }
 
-class GasCar {
+class GasCar implements Vehicle {
   // Implementación del método assemble
   // 'Ensamblando un auto de combustión'
+  assemble(): void {
+    console.log('%cEnsamblando un auto de combustión', COLORS.red);
+  }
 }
 
-class ElectricEngine {
+class ElectricEngine implements Engine {
   // Implementación del método start
   // 'Arrancando motor eléctrico'
+  start(): void {
+    console.log('%cArrancando motor eléctrico', COLORS.blue);
+  }
 }
 
-class GasEngine {
+class GasEngine implements Engine {
   // Implementación del método start
   // 'Arrancando motor de combustión'
+  start(): void {
+    console.log('%cArrancando motor de combustión', COLORS.orange);
+  }
 }
 
 // 3. Interfaz de la Fábrica Abstracta
@@ -70,10 +85,22 @@ interface VehicleFactory {
 
 class ElectricVehicleFactory implements VehicleFactory {
   // Implementación de los métodos createVehicle y createEngine
+  createVehicle(): Vehicle {
+    return new ElectricCar();
+  }
+  createEngine(): Engine {
+    return new ElectricEngine();
+  }
 }
 
 class GasVehicleFactory implements VehicleFactory {
   // Implementación de los métodos createVehicle y createEngine
+  createVehicle(): Vehicle {
+    return new GasCar();
+  }
+  createEngine(): Engine {
+    return new GasEngine();
+  }
 }
 
 // 5. Código Cliente
