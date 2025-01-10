@@ -33,7 +33,15 @@ type LogLevel = 'info' | 'warn' | 'error';
 function createLogger(level: LogLevel) {
   // Retorna una función que recibe el "message" como argumento
   // Completar: implementar el logger con formato y color para cada nivel
-  throw new Error('Not implemented');
+  return function (message: string) {
+    const date = formatDate(new Date());
+    const color = {
+      info: COLORS.gray,
+      warn: COLORS.yellow,
+      error: COLORS.red,
+    };
+    console.log(`%c[${level.toUpperCase()}:${date}] ${message}`, color[level]);
+  };
 }
 
 // Ejemplo de uso
