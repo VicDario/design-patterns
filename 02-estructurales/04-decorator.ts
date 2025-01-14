@@ -11,3 +11,57 @@
  *
  * https://refactoring.guru/es/design-patterns/decorator
  */
+
+import { COLORS } from "../helpers/colors.ts";
+
+interface Notification {
+    send(message: string): void;
+}
+
+class BasicNotification implements Notification {
+    send(message: string): void {
+      console.log(`Enviando notificación básica: %c${message}`, COLORS.blue);
+    }
+}
+
+abstract class NotificationDecorator implements Notification {
+    protected notification: Notification;
+
+    constructor(notification: Notification) {
+        this.notification = notification;
+    }
+
+    send(message: string): void {
+      this.notification.send(message);
+    }
+}
+
+class EmailDecorator extends NotificationDecorator {
+    private sendEmail(message: string) {
+        console.log(`%cEnviando notificación por correo electrónico: %c${message}`, COLORS.green, COLORS.white);
+    }
+    override send(message: string): void {
+      super.send(message);
+      this.sendEmail(message);
+    }
+}
+
+class SMSDecorator extends NotificationDecorator {
+    private sendSMS(message: string) {
+        console.log(`%cEnviando notificación por SMS: %c${message}`, COLORS.orange, COLORS.white);
+    }
+    override send(message: string): void {
+      super.send(message);
+      this.sendSMS(message);
+    }
+}
+
+
+function main() {
+    let notificación: Notification = new BasicNotification();
+    notificación = new EmailDecorator(notificación);
+    notificación = new SMSDecorator(notificación);
+    notificación.send('Alerta de sistema');
+}
+
+main();
