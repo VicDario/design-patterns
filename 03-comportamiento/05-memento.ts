@@ -8,3 +8,112 @@
  *
  * https://refactoring.guru/es/design-patterns/memento
  */
+
+import { COLORS } from '../helpers/colors.ts';
+
+class GameMemento {
+  private level: number;
+  private health: number;
+  private position: string;
+
+  constructor(level: number, health: number, position: string) {
+    this.level = level;
+    this.health = health;
+    this.position = position;
+  }
+
+  getLevel() {
+    return this.level;
+  }
+
+  getHealth() {
+    return this.health;
+  }
+
+  getPosition() {
+    return this.position;
+  }
+}
+
+class Game {
+  private level: number = 1;
+  private health: number = 100;
+  private position: string = 'Inicio';
+
+  constructor() {
+    console.log(`
+        Jugando en el nivel ${this.level}
+            salud: ${this.health}
+            posiciòn: ${this.position}    
+        `);
+  }
+
+  save(): GameMemento {
+    return new GameMemento(this.level, this.health, this.position);
+  }
+
+  play(level: number, health: number, position: string) {
+    this.level = level;
+    this.health = health;
+    this.position = position;
+
+    console.log(`
+        Jugando en el nivel ${level}
+            salud: ${health}
+            posición: ${position}    
+        `);
+  }
+
+  restore(memento: GameMemento): void {
+    this.level = memento.getLevel();
+    this.health = memento.getHealth();
+    this.position = memento.getPosition();
+
+    console.log(
+      `\n%cProgreso restaurado
+        
+        %cRestauración en el nivel %c${this.level}
+          salud: ${this.health}
+          posición: ${this.position}`,
+      COLORS.yellow,
+      COLORS.blue,
+      COLORS.white
+    );
+  }
+}
+
+class GameHistory {
+  private mementos: GameMemento[] = [];
+
+  push(memento: GameMemento) {
+    this.mementos.push(memento);
+  }
+
+  pop(): GameMemento | undefined {
+    return this.mementos.pop();
+  }
+}
+
+function main() {
+    const game = new Game();
+    const history = new GameHistory();
+
+    history.push(game.save());
+
+    game.play(2, 90, 'Bosque Encantado');
+    history.push(game.save());
+
+    game.play(3, 70, 'Cueva oscura');
+    history.push(game.save());
+
+    game.play(4, 50, 'Castillo del Dragón');
+    console.log(`%cEstado Actual`, COLORS.green);
+    
+    game.restore(history.pop()!);
+    console.log(`%cDespues de restaurar el ultimo estado guardado`, COLORS.green);
+
+    game.restore(history.pop()!);
+    console.log(`%cDespues de restaurar el ultimo estado guardado`, COLORS.green);
+}
+
+main();
