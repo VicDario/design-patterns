@@ -50,24 +50,35 @@ interface TaxStrategy {
 
 // Estrategia 1: Impuestos en USA
 class USATaxStrategy implements TaxStrategy {
-  // TODO: Implementar el método calculateTax = amount * 0.1
+  private tax = 0.1;
+  calculateTax(amount: number): number {
+    return amount * this.tax;
+  }
 }
 
 // Estrategia 2: Impuestos en Canada
 class CanadaTaxStrategy implements TaxStrategy {
-  // TODO: Implementar el método calculateTax = amount * 0.13
+  private tax = 0.13;
+  calculateTax(amount: number): number {
+    return amount * this.tax;
+  }
 }
 
 // Estrategia 3: Impuestos en Germany
 class GermanyTaxStrategy implements TaxStrategy {
-  // TODO: Implementar el método calculateTax = amount * 0.19
+  private tax = 0.19;
+  calculateTax(amount: number): number {
+    return amount * this.tax;
+  }
 }
 
 // Clase Contexto - TaxCalculator
 class TaxCalculator {
   private strategy: TaxStrategy;
 
-  // TODO: Implementar el constructor recibiendo la estrategia a usar
+  constructor(strategy: TaxStrategy) {
+    this.strategy = strategy;
+  }
 
   // Cambiar la estrategia de cálculo de impuestos
   setStrategy(strategy: TaxStrategy): void {
